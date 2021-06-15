@@ -138,7 +138,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(129, 146, 153);
+  background-color: #819299;
   padding: 3rem;
   margin: 1rem;
   width: 5rem;

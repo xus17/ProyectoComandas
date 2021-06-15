@@ -90,6 +90,25 @@
         
     </div>
     <br>
+    
+     <h2>Categorias</h2>
+     <div class="separar"><h3 >Categorias</h3><img src="../Img/drop.png" width="20px"  height="20px" alt="" data-toggle="collapse" data-target="#categorias"></div>
+    <div class="collapse" id="categorias">
+        <div v-for="categoria in categorias" v-bind:key="categoria.id" class="separar">
+            <p >Categoria: &nbsp;&nbsp; &nbsp; &nbsp;{{categoria.id}} </p>        
+            <button @click="borrarCategoria(categoria)" >Borrar</button>        </div>
+        
+    </div>    
+
+    <div class="separar"><h3 >Añadir Categoria</h3><img src="../Img/drop.png" width="20px"  height="20px" alt="" data-toggle="collapse" data-target="#addcategoria"></div>
+    <div id="addcategoria" class="collapse">
+        <div class="separar">
+            <p>Categoria: <input type="text" placeholder="Aqui la categoria..." v-model="nomCatego"> </p>        
+            <img src="../Img/add.png" alt="" width="20px"  height="20px" @click="addCategoria()">
+        </div>
+        
+    </div>
+    <br>
     <!-- type : Piechart -->
     <h2>Grafica Ingresos</h2>
     <button @click="cambiargrafica">Cambiar Grafica</button>
@@ -133,6 +152,7 @@ export default {
       selected: "",
       editar : false,
       nomProducto: "",
+      nomCatego: "",
       precioProducto : "",
       nomCamarero : "",
       nomnuevoCamarero : "",
@@ -305,7 +325,7 @@ export default {
         }
     },
      editarCamarero : function(camarero,index){
-        var inputNombre = document.getElementById("nomnuevoCamarero"+index);
+        var inputNombre = document.getElementById("nomCategoria"+index);
 
         if(inputNombre.value!=""){
         this.$notify({ group: 'foo', title: 'Agregado',type:"success",text: 'Se ha editado: '+this.nomnuevoCamarero+' '  });
@@ -316,6 +336,24 @@ export default {
     borrarCamarero : function(camarero){
          db.collection("Usuarios").doc(camarero.id).delete();
         this.$notify({ group: 'foo', title: 'Eliminado',type:"success",text: 'Se ha eliminado correctamente '});
+
+    },
+    addCategoria : function(){
+        if(this.nomCatego!=""){
+        this.$notify({ group: 'foo', title: 'Agregado',type:"success",text: 'Se ha agregado: '+this.nomCatego+' '  });
+         db.collection("Categorias").doc(this.nomCatego).set({Nombre: this.nomCatego});
+         this.nomCatego="";
+        }
+    },
+    borrarCategoria : function(catego){
+        var resultado = window.confirm('Estas seguro?');
+        if (resultado === true) {
+            db.collection("Categorias").doc(catego.id).delete();
+        this.$notify({ group: 'foo', title: 'Eliminado',type:"success",text: 'Se ha eliminado correctamente '});
+        } else { 
+            this.$notify({ group: 'foo', title: 'Cancelado',type:"success",text: 'No se ha eliminado.'});
+        }
+        
 
     }
 
